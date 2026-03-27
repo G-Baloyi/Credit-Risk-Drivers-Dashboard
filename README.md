@@ -86,5 +86,7 @@ These insights can support:
 ---
 
 ## Dashboard Preview
+<img width="928" height="620" alt="image" src="https://github.com/user-attachments/assets/0dbf02ea-f2f4-4e97-8e03-030cf083d543" />
+
 
 
