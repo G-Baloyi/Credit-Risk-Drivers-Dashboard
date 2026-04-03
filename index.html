@@ -1,168 +1,900 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Tableau Dashboards</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Credit Risk & Financial Behavior Analysis | Financial Intelligence Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    /* ========== REFINED PROFESSIONAL COLOR SCHEME ========== */
+    :root {
+      --bg-primary:    #f7f9fc;
+      --bg-surface:    #ffffff;
+      --bg-elevated:   #ffffff;
+      --text-primary:  #1a2634;
+      --text-secondary:#4a5b6e;
+      --text-muted:    #7c8b9c;
+      --border-light:  #e2e8f0;
+      --border-med:    #cbd5e1;
+      --accent:        #2c5f8a;
+      --accent-light:  #eef2f8;
+      --accent-glow:   rgba(44,95,138,0.08);
+      --success:       #2b7a4b;
+      --success-light: #e8f3ed;
+      --warning:       #c17a2b;
+      --warning-light: #fef5e8;
+      --danger:        #b33b2c;
+      --danger-light:  #fef0ee;
+      --shadow-sm:     0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+      --shadow-md:     0 4px 12px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+      --shadow-lg:     0 12px 28px rgba(0,0,0,0.08);
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
     body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      background: #f4f6f9;
-      color: #333;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.5;
     }
-    header {
-      background: linear-gradient(135deg, #0066cc, #00aaff);
-      color: white;
-      padding: 2rem;
-      text-align: center;
+ 
+    /* subtle background texture */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(var(--border-light) 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 0;
     }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      font-weight: 600;
-    }
+ 
+    .page { position: relative; z-index: 1; }
+ 
+    /* ========== NAVIGATION ========== */
     nav {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-light);
+      padding: 0 52px;
       display: flex;
-      justify-content: center;
-      background: #004c99;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      backdrop-filter: blur(8px);
+      background: rgba(255,255,255,0.96);
     }
-    nav button {
-      background: none;
+    .nav-left { display: flex; align-items: center; gap: 24px; }
+    .nav-wordmark {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .nav-sep { width: 1px; height: 20px; background: var(--border-light); }
+    .nav-title-short {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .nav-tabs { display: flex; gap: 4px; }
+    .nav-tab {
+      padding: 0 20px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
       border: none;
-      color: white;
-      padding: 1rem 2rem;
-      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.3s;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
     }
-    nav button:hover, nav button.active {
-      background: #0066cc;
+    .nav-tab:hover { color: var(--accent); }
+    .nav-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
     }
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+ 
+    /* ========== HERO SECTION ========== */
+    .hero {
+      padding: 64px 52px 56px;
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      gap: 56px;
+      align-items: start;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-bottom: 1px solid var(--border-light);
     }
-    .dashboard {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 1rem;
-      display: none;
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .dashboard.active {
+    .hero-eyebrow::after {
+      content: '';
+      flex: 1;
+      max-width: 48px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .hero h1 span { 
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-abstract {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 540px;
+    }
+    .hero-right {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 28px 32px;
+      box-shadow: var(--shadow-sm);
+    }
+    .kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .kpi-cell {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .kpi-cell:nth-child(odd)  { padding-right: 24px; border-right: 1px solid var(--border-light); }
+    .kpi-cell:nth-child(even) { padding-left: 24px; }
+    .kpi-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .kpi-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .kpi-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .kpi-val.accent { color: var(--accent); }
+    .kpi-val.warning { color: var(--warning); }
+    .kpi-val.danger { color: var(--danger); }
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+ 
+    /* ========== SECTION LABELS ========== */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 48px 52px 24px;
+    }
+    .section-label-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .section-label-rule { flex: 1; height: 1px; background: var(--border-light); }
+ 
+    /* ========== DASHBOARD CARDS ========== */
+    .dash-selector {
+      padding: 0 52px 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .dash-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .dash-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-med);
+    }
+    .dash-card.active {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(44,95,138,0.12);
+    }
+    .dash-card.active::before {
+      background: var(--accent);
+    }
+    .dash-card::before {
+      content: '';
       display: block;
+      height: 3px;
+      background: var(--border-light);
+      transition: background 0.2s;
     }
-    .dashboard h2 {
-      margin-top: 0;
-      font-size: 1.5rem;
-      color: #0066cc;
+    .dash-card.active::before { background: var(--accent); }
+    .dash-card-inner { padding: 28px 28px 20px; }
+    .dc-num {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
     }
+    .dc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .dc-desc {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .dc-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .dc-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+    .dc-tag.risk  { background: var(--danger-light); color: var(--danger); }
+    .dc-tag.safe  { background: var(--success-light); color: var(--success); }
+    .dc-tag.warning { background: var(--warning-light); color: var(--warning); }
+    .dc-footer {
+      border-top: 1px solid var(--border-light);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-primary);
+    }
+    .dc-cta {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .dash-card:hover .dc-cta,
+    .dash-card.active .dc-cta { color: var(--accent); }
+    .dc-status {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .dash-card.active .dc-status { color: var(--success); }
+ 
+    /* ========== VIEWER SECTION ========== */
+    .viewer-wrap { padding: 0 52px 48px; }
+    .viewer-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .vtb-left { display: flex; align-items: center; gap: 12px; }
+    .vtb-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 3px rgba(43,122,75,0.15);
+    }
+    .vtb-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--text-primary);
+    }
+    .btn-outline {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border: 1px solid var(--border-med);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 40px;
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+    .btn-outline.sel {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+ 
+    .iframe-shell {
+      border: 1px solid var(--border-light);
+      border-top: none;
+      background: var(--bg-surface);
+      position: relative;
+      min-height: 800px;
+      border-radius: 0 0 16px 16px;
+      overflow: hidden;
+    }
+    .iframe-shell iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      min-height: 800px;
+    }
+ 
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      transition: opacity 0.4s ease;
+    }
+    .loading-overlay.gone { opacity: 0; pointer-events: none; }
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--border-light);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+ 
+    /* ========== INSIGHTS GRID ========== */
+    .insights-section { padding: 0 52px 60px; }
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border-light);
+      background: var(--bg-surface);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .insight-cell {
+      padding: 28px;
+      border-right: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.2s;
+    }
+    .insight-cell:hover { background: var(--bg-primary); }
+    .insight-cell:nth-child(3n) { border-right: none; }
+    .insight-cell:nth-last-child(-n+3) { border-bottom: none; }
+    .insight-chart-ref {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .insight-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      line-height: 1.35;
+    }
+    .insight-body {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .insight-tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .insight-tag.risk  { background: var(--danger-light); color: var(--danger); }
+    .insight-tag.safe  { background: var(--success-light); color: var(--success); }
+    .insight-tag.warning { background: var(--warning-light); color: var(--warning); }
+ 
+    /* ========== CONCLUSION ========== */
+    .conclusion {
+      margin: 0 52px 48px;
+      padding: 48px 56px;
+      background: linear-gradient(135deg, var(--text-primary) 0%, #1e2f3e 100%);
+      border-radius: 24px;
+      color: #fff;
+    }
+    .conc-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 20px;
+    }
+    .conc-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.92);
+      max-width: 800px;
+      margin-bottom: 48px;
+    }
+    .conc-findings {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 40px;
+      gap: 32px;
+    }
+    .finding-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 12px;
+    }
+    .finding-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 8px;
+    }
+    .finding-body {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.5);
+    }
+ 
+    /* ========== FOOTER ========== */
     footer {
-      text-align: center;
-      padding: 1rem;
-      background: #0066cc;
-      color: white;
-      margin-top: 2rem;
+      border-top: 1px solid var(--border-light);
+      padding: 24px 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
     }
+    .footer-left {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-link {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: var(--accent); }
+ 
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1000px) {
+      nav, .hero, .dash-selector, .viewer-wrap,
+      .insights-section, .section-label, footer { padding-left: 24px; padding-right: 24px; }
+      .hero { grid-template-columns: 1fr; gap: 32px; }
+      .dash-selector { grid-template-columns: 1fr; }
+      .insights-grid { grid-template-columns: 1fr; }
+      .insight-cell { border-right: none; }
+      .insight-cell:nth-last-child(-n+3) { border-bottom: 1px solid var(--border-light); }
+      .insight-cell:last-child { border-bottom: none; }
+      .conc-findings { grid-template-columns: 1fr; gap: 32px; }
+      .conclusion { margin: 0 24px 48px; padding: 36px 28px; }
+    }
+ 
+    /* fade-in animations */
+    .reveal { opacity: 0; transform: translateY(16px); animation: revealUp 0.55s ease forwards; }
+    @keyframes revealUp { to { opacity: 1; transform: translateY(0); } }
+    .r1 { animation-delay: 0.05s; }
+    .r2 { animation-delay: 0.15s; }
+    .r3 { animation-delay: 0.25s; }
+    .r4 { animation-delay: 0.35s; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>My Tableau Dashboards</h1>
-    <p>Interactive insights hosted on GitHub Pages</p>
-  </header>
-
+<div class="page">
+ 
   <nav>
-    <button class="active" onclick="showDashboard('dash1')">Credit Risk Drivers</button>
-    <button onclick="showDashboard('dash2')">Customer Behavior Insights</button>
-  </nav>
-
-  <div class="container">
-    <div id="dash1" class="dashboard active">
-      <h2>Credit Risk Drivers</h2>
-      <!-- Dashboard 1 Embed -->
-      <div class='tableauPlaceholder' id='viz1775186692887' style='position: relative'>
-        <noscript><a href='#'><img alt='Dashboard 1 - Credit Risk Drivers ' src='https://public.tableau.com/static/images/In/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers/1_rss.png' style='border: none' /></a></noscript>
-        <object class='tableauViz' style='display:none;'>
-          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-          <param name='embed_code_version' value='3' />
-          <param name='site_root' value='' />
-          <param name='name' value='IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers' />
-          <param name='tabs' value='no' />
-          <param name='toolbar' value='yes' />
-          <param name='static_image' value='https://public.tableau.com/static/images/In/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers/1.png' />
-          <param name='animate_transition' value='yes' />
-          <param name='display_static_image' value='yes' />
-          <param name='display_spinner' value='yes' />
-          <param name='display_overlay' value='yes' />
-          <param name='display_count' value='yes' />
-          <param name='language' value='en-US' />
-          <param name='filter' value='publish=yes' />
-        </object>
-      </div>
-      <script type='text/javascript'>
-        var divElement = document.getElementById('viz1775186692887');
-        var vizElement = divElement.getElementsByTagName('object')[0];
-        if (divElement.offsetWidth > 800) { vizElement.style.width='1200px';vizElement.style.height='827px'; }
-        else if (divElement.offsetWidth > 500) { vizElement.style.width='1200px';vizElement.style.height='827px'; }
-        else { vizElement.style.width='100%';vizElement.style.height='1727px'; }
-        var scriptElement = document.createElement('script');
-        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-        vizElement.parentNode.insertBefore(scriptElement, vizElement);
-      </script>
+    <div class="nav-left">
+      <span class="nav-wordmark">CREDIT ANALYTICS</span>
+      <div class="nav-sep"></div>
+      <span class="nav-title-short">Risk & Financial Behavior Study</span>
     </div>
-
-    <div id="dash2" class="dashboard">
-      <h2>Customer Financial Behavior & Risk Insights</h2>
-      <!-- Dashboard 2 Embed -->
-      <div class='tableauPlaceholder' id='viz1775186734314' style='position: relative'>
-        <noscript><a href='#'><img alt='Customer Financial Behavior & Risk Insights' src='https://public.tableau.com/static/images/In/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard2CustomerFinancialBehavior/1_rss.png' style='border: none' /></a></noscript>
-        <object class='tableauViz' style='display:none;'>
-          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-          <param name='embed_code_version' value='3' />
-          <param name='site_root' value='' />
-          <param name='name' value='IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard2CustomerFinancialBehavior' />
-          <param name='tabs' value='no' />
-          <param name='toolbar' value='yes' />
-          <param name='static_image' value='https://public.tableau.com/static/images/In/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard2CustomerFinancialBehavior/1.png' />
-          <param name='animate_transition' value='yes' />
-          <param name='display_static_image' value='yes' />
-          <param name='display_spinner' value='yes' />
-          <param name='display_overlay' value='yes' />
-          <param name='display_count' value='yes' />
-          <param name='language' value='en-US' />
-          <param name='filter' value='publish=yes' />
-        </object>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-section="hero">Overview</button>
+      <button class="nav-tab" data-section="dashboards">Dashboards</button>
+      <button class="nav-tab" data-section="insights-anchor">Insights</button>
+      <button class="nav-tab" data-section="conclusion-anchor">Conclusions</button>
+    </div>
+  </nav>
+ 
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow reveal r1">Financial Intelligence Report</div>
+      <h1 class="reveal r2">Customer <span>Credit Risk</span> &amp; Financial Behavior Analysis</h1>
+      <p class="hero-abstract reveal r3">
+        A comprehensive analytical study examining key drivers of credit risk across a customer lending portfolio — integrating loan characteristics, demographic profiling, and transaction-level behavioral data to enable data-driven lending decisions and proactive risk monitoring.
+      </p>
+    </div>
+    <div class="hero-right reveal r4">
+      <div class="kpi-row">
+        <div class="kpi-cell">
+          <div class="kpi-label">Primary Risk Signal</div>
+          <div class="kpi-val danger">High Risk %</div>
+          <div class="kpi-sub">Portfolio exposure indicator</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">Liquidity Indicator</div>
+          <div class="kpi-val">Avg Net Cash Flow</div>
+          <div class="kpi-sub">Income minus spending</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">Behavioral Signal</div>
+          <div class="kpi-val warning">Txn Volatility</div>
+          <div class="kpi-sub">Irregular spending patterns</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-label">Repayment Pressure</div>
+          <div class="kpi-val accent">Credit Intensity</div>
+          <div class="kpi-sub">Loan amount vs. duration</div>
+        </div>
       </div>
-      <script type='text/javascript'>
-        var divElement = document.getElementById('viz1775186734314');
-        var vizElement = divElement.getElementsByTagName('object')[0];
-        if (divElement.offsetWidth > 800) { vizElement.style.width='1200px';vizElement.style.height='827px'; }
-        else if (divElement.offsetWidth > 500) { vizElement.style.width='1200px';vizElement.style.height='827px'; }
-        else { vizElement.style.width='100%';vizElement.style.height='1927px'; }
-        var scriptElement = document.createElement('script');
-        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-        vizElement.parentNode.insertBefore(scriptElement, vizElement);
-      </script>
+    </div>
+  </section>
+ 
+  <!-- DASHBOARD SELECTOR -->
+  <div class="section-label" id="dashboards">
+    <span class="section-label-text">Interactive Dashboards</span>
+    <div class="section-label-rule"></div>
+  </div>
+ 
+  <div class="dash-selector">
+    <div class="dash-card active" data-dash="1" id="card-1">
+      <div class="dash-card-inner">
+        <div class="dc-num">Dashboard 01</div>
+        <div class="dc-title">Credit Risk Drivers</div>
+        <div class="dc-desc">Examines loan characteristics, customer demographics, and portfolio-level risk distribution — identifying how loan size, duration, and job category contribute to default likelihood.</div>
+        <div class="dc-tags">
+          <span class="dc-tag risk">Risk Distribution</span>
+          <span class="dc-tag">Loan Characteristics</span>
+          <span class="dc-tag">Demographics</span>
+          <span class="dc-tag warning">Credit Intensity</span>
+        </div>
+      </div>
+      <div class="dc-footer">
+        <span class="dc-cta">View Dashboard →</span>
+        <span class="dc-status" id="status-1">● Active</span>
+      </div>
+    </div>
+ 
+    <div class="dash-card" data-dash="2" id="card-2">
+      <div class="dash-card-inner">
+        <div class="dc-num">Dashboard 02</div>
+        <div class="dc-title">Customer Financial Behavior</div>
+        <div class="dc-desc">Analyzes transaction-level financial behavior — net cash flow, spending patterns, and volatility — to identify high-risk segments and support early-warning detection.</div>
+        <div class="dc-tags">
+          <span class="dc-tag warning">Transaction Behavior</span>
+          <span class="dc-tag safe">Cash Flow Stability</span>
+          <span class="dc-tag risk">High-Risk Segments</span>
+        </div>
+      </div>
+      <div class="dc-footer">
+        <span class="dc-cta">View Dashboard →</span>
+        <span class="dc-status" id="status-2">● Load</span>
+      </div>
     </div>
   </div>
-
+ 
+  <!-- VIEWER -->
+  <div class="viewer-wrap">
+    <div class="viewer-topbar">
+      <div class="vtb-left">
+        <div class="vtb-indicator"></div>
+        <span class="vtb-name" id="vtb-name">Credit Risk Drivers</span>
+      </div>
+      <div>
+        <a id="open-link"
+           href="https://public.tableau.com/views/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers"
+           target="_blank" rel="noopener" class="btn-outline">Open in Tableau ↗</a>
+      </div>
+    </div>
+    <div class="iframe-shell">
+      <div class="loading-overlay" id="loading">
+        <div class="loading-spinner"></div>
+        <span class="loading-label">Loading dashboard</span>
+      </div>
+      <iframe
+        id="viz-iframe"
+        src="https://public.tableau.com/views/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers?:embed=y&:showVizHome=no&:toolbar=yes&:tabs=no&:animate_transition=yes&:display_count=n&:language=en-US"
+        title="Credit Risk Drivers"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+ 
+  <!-- INSIGHTS -->
+  <div class="section-label" id="insights-anchor" style="margin-top: 0;">
+    <span class="section-label-text">Key Analytical Findings</span>
+    <div class="section-label-rule"></div>
+  </div>
+ 
+  <div style="padding: 0 52px 20px; display: flex; gap: 12px;">
+    <button class="btn-outline sel" data-insight="d1" id="itab-d1">Credit Risk Drivers</button>
+    <button class="btn-outline" data-insight="d2" id="itab-d2">Financial Behavior</button>
+  </div>
+ 
+  <section class="insights-section" id="ins-d1">
+    <div class="insights-grid">
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 1</div>
+        <div class="insight-title">Portfolio Risk Distribution</div>
+        <div class="insight-body">While the majority of customers are Low Risk, a notable proportion falls in High Risk — representing real default exposure that requires proactive portfolio monitoring.</div>
+        <span class="insight-tag risk">Portfolio Exposure</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 2</div>
+        <div class="insight-title">Loan Amount & Duration</div>
+        <div class="insight-body">High-risk customers cluster with large loan amounts and extended durations. Smaller, shorter-term loans consistently fall in low-risk zones.</div>
+        <span class="insight-tag risk">Risk Indicator</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 3</div>
+        <div class="insight-title">Loan Intensity vs Risk</div>
+        <div class="insight-body">High repayment pressure strongly predicts default. High-intensity customers cluster firmly in high-risk categories — a powerful standalone predictor.</div>
+        <span class="insight-tag warning">Predictive Signal</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 4</div>
+        <div class="insight-title">Job Category Risk Profile</div>
+        <div class="insight-body">Employment stability is a reliable risk proxy. Less stable job categories show markedly higher proportions of high-risk classification.</div>
+        <span class="insight-tag safe">Risk Proxy</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">KPI Overview</div>
+        <div class="insight-title">Portfolio Health Metrics</div>
+        <div class="insight-body">The high-risk percentage is the headline metric. Filtering by age, housing, and sex reveals which sub-segments drive aggregate risk.</div>
+        <span class="insight-tag risk">Portfolio Health</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Summary</div>
+        <div class="insight-title">Composite Risk View Required</div>
+        <div class="insight-body">No single variable tells the full story. Loan intensity, duration, demographics, and employment category together provide the most reliable risk picture.</div>
+        <span class="insight-tag warning">Strategic Takeaway</span>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="insights-section" id="ins-d2" style="display: none;">
+    <div class="insights-grid">
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 1</div>
+        <div class="insight-title">Spending vs Income Behavior</div>
+        <div class="insight-body">High-risk customers cluster in higher spending relative to transaction frequency — indicating financial overextension and stressed cash flow.</div>
+        <span class="insight-tag risk">Behavioral Risk</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 2</div>
+        <div class="insight-title">Net Cash Flow Distribution</div>
+        <div class="insight-body">Negative cash flow strongly stratifies risk. Even within average bands, high-risk proportion remains significant — persistent liquidity stress.</div>
+        <span class="insight-tag risk">Liquidity Stress</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 3</div>
+        <div class="insight-title">Transaction Volatility</div>
+        <div class="insight-body">High volatility paired with large credit amounts defines the highest-risk segment. Irregularity signals instability beyond income metrics.</div>
+        <span class="insight-tag warning">Behavioral Signal</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 4</div>
+        <div class="insight-title">Dual-Dimension Risk Mapping</div>
+        <div class="insight-body">Negative cash flow + high volatility = highest-risk cluster. This segment benefits most from targeted early intervention.</div>
+        <span class="insight-tag risk">High-Risk Cluster</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Chart 5</div>
+        <div class="insight-title">Loan Decision Support Matrix</div>
+        <div class="insight-body">Upper-right quadrant (high risk score + high intensity) flags priority cases for stricter underwriting or tailored monitoring.</div>
+        <span class="insight-tag warning">Decision Support</span>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-chart-ref">Summary</div>
+        <div class="insight-title">Behavioral Data Adds Depth</div>
+        <div class="insight-body">Cash flow, volatility, and spending patterns are primary risk signals. Integrating them improves segmentation accuracy significantly.</div>
+        <span class="insight-tag safe">Strategic Takeaway</span>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- CONCLUSION -->
+  <div class="section-label" id="conclusion-anchor">
+    <span class="section-label-text">Study Conclusions</span>
+    <div class="section-label-rule"></div>
+  </div>
+ 
+  <div class="conclusion">
+    <div class="conc-label">Analytical Conclusion</div>
+    <div class="conc-text">
+      "Credit risk is not a single-variable problem. Default likelihood is shaped by the convergence of loan structure, demographic context, and behavioral financial patterns — institutions that monitor all three dimensions are better positioned to reduce exposure and allocate capital effectively."
+    </div>
+    <div class="conc-findings">
+      <div class="finding">
+        <div class="finding-num">01</div>
+        <div class="finding-title">Loan Structure Drives Baseline Risk</div>
+        <div class="finding-body">Loan amount, duration, and credit intensity are the strongest structural predictors. High-intensity, long-duration loans represent the highest-risk segment.</div>
+      </div>
+      <div class="finding">
+        <div class="finding-num">02</div>
+        <div class="finding-title">Cash Flow Is the Leading Behavioral Indicator</div>
+        <div class="finding-body">Chronically negative net cash flow correlates strongly with high-risk classification — monitoring trends enables earlier detection.</div>
+      </div>
+      <div class="finding">
+        <div class="finding-num">03</div>
+        <div class="finding-title">Behavioral Analytics Improve Segmentation</div>
+        <div class="finding-body">Transaction volatility and spending ratios add predictive power beyond traditional metrics, reducing misclassification in the medium-risk band.</div>
+      </div>
+    </div>
+  </div>
+ 
   <footer>
-    <p>© 2026 Goitsemang Baloyi | Powered by Tableau & GitHub Pages</p>
+    <span class="footer-left">Customer Credit Risk & Financial Behavior Analysis — Financial Intelligence Report</span>
+    <div class="footer-links">
+      <a class="footer-link" href="https://public.tableau.com/views/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers" target="_blank">Dashboard 1 ↗</a>
+      <a class="footer-link" href="https://public.tableau.com/views/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard2CustomerFinancialBehavior" target="_blank">Dashboard 2 ↗</a>
+    </div>
   </footer>
-
-  <script>
-    function showDashboard(id) {
-      document.querySelectorAll('.dashboard').forEach(d => d.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
+ 
+</div>
+ 
+<script>
+  const DASHBOARDS = {
+    1: {
+      name: 'Credit Risk Drivers',
+      src: 'https://public.tableau.com/views/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers?:embed=y&:showVizHome=no&:toolbar=yes&:tabs=no&:animate_transition=yes&:display_count=n&:language=en-US',
+      link: 'https://public.tableau.com/views/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers'
+    },
+    2: {
+      name: 'Customer Financial Behavior',
+      src: 'https://public.tableau.com/views/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard2CustomerFinancialBehavior?:embed=y&:showVizHome=no&:toolbar=yes&:tabs=no&:animate_transition=yes&:display_count=n&:language=en-US',
+      link: 'https://public.tableau.com/views/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard2CustomerFinancialBehavior'
     }
-  </script>
+  };
+  
+  let currentDashboard = 1;
+  let iframeLoadTimer = null;
+  
+  const iframe = document.getElementById('viz-iframe');
+  const loadingOverlay = document.getElementById('loading');
+  const viewerName = document.getElementById('vtb-name');
+  const openLink = document.getElementById('open-link');
+  const card1 = document.getElementById('card-1');
+  const card2 = document.getElementById('card-2');
+  const status1 = document.getElementById('status-1');
+  const status2 = document.getElementById('status-2');
+  const insightTab1 = document.getElementById('itab-d1');
+  const insightTab2 = document.getElementById('itab-d2');
+  const insD1 = document.getElementById('ins-d1');
+  const insD2 = document.getElementById('ins-d2');
+  const navTabs = document.querySelectorAll('.nav-tab');
+  
+  function loadDashboard(dashboardId) {
+    if (dashboardId === currentDashboard) {
+      document.getElementById('dashboards').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    currentDashboard = dashboardId;
+    const dashboard = DASHBOARDS[dashboardId];
+    viewerName.textContent = dashboard.name;
+    openLink.href = dashboard.link;
+    loadingOverlay.classList.remove('gone');
+    if (iframeLoadTimer) clearTimeout(iframeLoadTimer);
+    iframe.src = dashboard.src;
+    iframe.title = dashboard.name;
+    card1.classList.toggle('active', dashboardId === 1);
+    card2.classList.toggle('active', dashboardId === 2);
+    status1.textContent = dashboardId === 1 ? '● Active' : '● Load';
+    status2.textContent = dashboardId === 2 ? '● Active' : '● Load';
+    setTimeout(() => { document.getElementById('dashboards').scrollIntoView({ behavior: 'smooth' }); }, 100);
+  }
+  
+  iframe.onload = () => { iframeLoadTimer = setTimeout(() => loadingOverlay.classList.add('gone'), 500); };
+  iframe.onerror = () => { setTimeout(() => loadingOverlay.classList.add('gone'), 800); };
+  
+  function switchInsights(tab) {
+    if (tab === 'd1') { insD1.style.display = 'block'; insD2.style.display = 'none'; insightTab1.classList.add('sel'); insightTab2.classList.remove('sel'); }
+    else { insD1.style.display = 'none'; insD2.style.display = 'block'; insightTab1.classList.remove('sel'); insightTab2.classList.add('sel'); }
+  }
+  
+  function navScroll(sectionId, btn) {
+    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    navTabs.forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  
+  card1.addEventListener('click', () => loadDashboard(1));
+  card2.addEventListener('click', () => loadDashboard(2));
+  insightTab1.addEventListener('click', () => switchInsights('d1'));
+  insightTab2.addEventListener('click', () => switchInsights('d2'));
+  navTabs.forEach(tab => { tab.addEventListener('click', (e) => { const sectionId = tab.getAttribute('data-section'); if (sectionId) navScroll(sectionId, tab); }); });
+  
+  setTimeout(() => loadingOverlay.classList.add('gone'), 800);
+</script>
 </body>
 </html>
-
