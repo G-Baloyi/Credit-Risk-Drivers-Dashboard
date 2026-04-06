@@ -137,7 +137,7 @@ Several calculated fields were created to enhance analytical depth:
 * Simulate a **Loan Decision Support System** using risk scores and credit intensity.
 
 ---
-## **Dashboard link**
+## **Dashboards Links**
 
 https://g-baloyi.github.io/Customer-Credit-Risk-and-Financial-Behavior-Analysis/
 https://public.tableau.com/app/profile/goitsemang.baloyi/viz/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers
