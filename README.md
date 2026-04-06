@@ -140,6 +140,8 @@ Several calculated fields were created to enhance analytical depth:
 ## **Dashboard link**
 
 https://g-baloyi.github.io/Customer-Credit-Risk-and-Financial-Behavior-Analysis/
+https://public.tableau.com/app/profile/goitsemang.baloyi/viz/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard1-CreditRiskDrivers
+https://public.tableau.com/app/profile/goitsemang.baloyi/viz/IntegratedCreditRiskCustomerBehaviorAnalyticsDashboard/Dashboard2CustomerFinancialBehavior
 
 
 
